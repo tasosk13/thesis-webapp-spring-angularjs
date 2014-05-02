@@ -1,3 +1,6 @@
+contacts:
+    - petmakris at di dot uoa dot gr
+
 webapp-spring-angularjs
 ==============================
 
