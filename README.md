@@ -1,4 +1,5 @@
-thesis-webapp-spring-angularjs
+webapp-spring-angularjs
 ==============================
 
 Example Application using Spring Framework and AngularJS
+
