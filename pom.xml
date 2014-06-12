@@ -37,7 +37,25 @@
 		<dependency>
 		   <groupId>org.springframework.data</groupId>
 		   <artifactId>spring-data-jpa</artifactId>
-		   <version>1.6.0.RELEASE</version>
+		   <version>1.4.1.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.1.9.Final</version>
+		</dependency>
+		
+		<dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+		
+		<dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-jdbc</artifactId>
+    	<version>${spring.version}</version>
 		</dependency>
 		
 		<!--  Servlet API (provided on deployment by web container) -->
@@ -54,6 +72,12 @@
     		<version>1.0.1.Final</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.26</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlets</artifactId>
