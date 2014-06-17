@@ -7,6 +7,5 @@ public interface GenericService< T, ID extends Serializable > {
 	public T create(T t);
 	public T findByID(ID id);
 	public List<T> findAll();
-	public T update(T t);
 	public T delete(ID id);
 }

@@ -13,19 +13,28 @@ public abstract class GenericServiceBase<T,ID extends Serializable> implements G
 	abstract JpaRepository<T, ID> getRepository();
 	
 	@Transactional
-	public T create(T t) {
-		return getRepository().save(t);
+	public T create(T entity) {
+		return getRepository().save(entity);
 	}
+	
+	@Transactional
 	public T findByID(ID id) {
-		return null;
+		return getRepository().findOne(id);
 	}
+	
+	@Transactional
 	public List<T> findAll() {
-		return null;
+		return getRepository().findAll();
 	}
-	public T update(T t) {
-		return null;
-	}
+	
+	@Transactional
 	public T delete(ID id) {
-		return null;
+		T entity = getRepository().findOne(id);
+
+		if (entity == null)
+			return null;
+
+		getRepository().delete(entity);
+		return entity;
 	}
 }
