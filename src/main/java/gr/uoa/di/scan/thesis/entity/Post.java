@@ -1,7 +1,8 @@
 package gr.uoa.di.scan.thesis.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,17 +32,17 @@ public class Post {
 	private String body;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id",insertable=false,updatable=false,nullable=false)
-	private User created_by;
+	@JoinColumn(name="userId",insertable=false,updatable=false,nullable=false)
+	private User createdBy;
 	
-	@OneToMany(mappedBy="posted_in_post",cascade=CascadeType.PERSIST)
-	private List<Comment> comments = new ArrayList<Comment>();
+	@OneToMany(mappedBy="postedInPost",cascade=CascadeType.PERSIST)
+	private Set<Comment> comments = new HashSet<Comment>();
 	
 	@ManyToMany
-	@JoinTable(name="Post_has_Tag",
-			joinColumns=@JoinColumn(name="post_id",referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="tag_id",referencedColumnName="id"))
-	private List<Tag> tags = new ArrayList<Tag>();
+	@JoinTable(name="PostHasTag",
+			joinColumns=@JoinColumn(name="postId",referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="tagId",referencedColumnName="id"))
+	private Set<Tag> tags = new HashSet<Tag>();
 
 	public Long getId() {
 		return id;
@@ -67,28 +68,55 @@ public class Post {
 		this.body = body;
 	}
 
-	public User getCreated_by() {
-		return created_by;
+	public User getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setCreated_by(User created_by) {
-		this.created_by = created_by;
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
 
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Post other = (Post) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	
 	
 }

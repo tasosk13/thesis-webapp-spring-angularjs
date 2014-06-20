@@ -1,8 +1,9 @@
 package gr.uoa.di.scan.thesis.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,22 +31,22 @@ public class Comment {
 	
 	@Column(nullable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date_created;
+	private Date dateCreated;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id",insertable=false,updatable=false,nullable=false)
-	private User posted_by;
+	private User postedBy;
 	
 	@ManyToOne
 	@JoinColumn(name="post_id",insertable=false,updatable=false,nullable=true)
-	private Post posted_in_post;
+	private Post postedInPost;
 	
 	@ManyToOne
 	@JoinColumn(name="comment_id",insertable=false,updatable=false,nullable=true)
-	private Comment posted_in_comment;
+	private Comment postedInComment;
 	
 	@OneToMany(mappedBy="posted_in_comment",cascade=CascadeType.PERSIST)
-	private List<Comment> comments = new ArrayList<Comment>();
+	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Long getId() {
 		return id;
@@ -63,44 +64,71 @@ public class Comment {
 		this.body = body;
 	}
 
-	public Date getDate_created() {
-		return date_created;
+	public Date getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setDate_created(Date date_created) {
-		this.date_created = date_created;
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
-	public User getPosted_by() {
-		return posted_by;
+	public User getPostedBy() {
+		return postedBy;
 	}
 
-	public void setPosted_by(User posted_by) {
-		this.posted_by = posted_by;
+	public void setPostedBy(User postedBy) {
+		this.postedBy = postedBy;
 	}
 
-	public Post getPosted_in_post() {
-		return posted_in_post;
+	public Post getPostedInPost() {
+		return postedInPost;
 	}
 
-	public void setPosted_in_post(Post posted_in_post) {
-		this.posted_in_post = posted_in_post;
+	public void setPostedInPost(Post postedInPost) {
+		this.postedInPost = postedInPost;
 	}
 
-	public Comment getPosted_in_comment() {
-		return posted_in_comment;
+	public Comment getPostedInComment() {
+		return postedInComment;
 	}
 
-	public void setPosted_in_comment(Comment posted_in_comment) {
-		this.posted_in_comment = posted_in_comment;
+	public void setPostedInComment(Comment postedInComment) {
+		this.postedInComment = postedInComment;
 	}
 
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Comment other = (Comment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	
 	
 }

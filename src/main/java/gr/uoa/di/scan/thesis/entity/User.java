@@ -1,7 +1,8 @@
 package gr.uoa.di.scan.thesis.entity;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,11 +36,11 @@ public class User {
 	@Column(nullable=false)
 	private String password;
 	
-	@OneToMany(mappedBy="created_by",cascade=CascadeType.PERSIST)
-	private List<Post> posts = new ArrayList<Post>();
+	@OneToMany(mappedBy="createdBy",cascade=CascadeType.PERSIST)
+	private Set<Post> posts = new HashSet<Post>();
 	
-	@OneToMany(mappedBy="posted_by",cascade=CascadeType.PERSIST)
-	private List<Comment> comments = new ArrayList<Comment>();
+	@OneToMany(mappedBy="postedBy",cascade=CascadeType.PERSIST)
+	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Long getId() {
 		return id;
@@ -89,20 +90,45 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Post> getPosts() {
+	public Set<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(Set<Post> posts) {
 		this.posts = posts;
 	}
 
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }
