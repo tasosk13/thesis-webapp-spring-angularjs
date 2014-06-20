@@ -45,7 +45,7 @@ public class Comment {
 	@JoinColumn(name="comment_id",insertable=false,updatable=false,nullable=true)
 	private Comment postedInComment;
 	
-	@OneToMany(mappedBy="posted_in_comment",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="postedInComment",cascade=CascadeType.PERSIST)
 	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Long getId() {
