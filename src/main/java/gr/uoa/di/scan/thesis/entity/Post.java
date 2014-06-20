@@ -116,7 +116,5 @@ public class Post {
 			return false;
 		return true;
 	}
-
-	
 	
 }

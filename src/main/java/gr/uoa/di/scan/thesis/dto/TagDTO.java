@@ -1,30 +1,17 @@
-package gr.uoa.di.scan.thesis.entity;
+package gr.uoa.di.scan.thesis.dto;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+@Component
+public class TagDTO {
 
-
-@Entity
-@Table(name="Tags")
-public class Tag {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable=false,unique=true,length=50)
 	private String title;
 	
-	@ManyToMany(mappedBy="tags")
-	private Set<Post> posts = new HashSet<Post>();
+	private Set<PostDTO> posts = new HashSet<PostDTO>();
 
 	public Long getId() {
 		return id;
@@ -42,11 +29,11 @@ public class Tag {
 		this.title = title;
 	}
 
-	public Set<Post> getPosts() {
+	public Set<PostDTO> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(Set<Post> posts) {
+	public void setPosts(Set<PostDTO> posts) {
 		this.posts = posts;
 	}
 
@@ -66,7 +53,7 @@ public class Tag {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tag other = (Tag) obj;
+		TagDTO other = (TagDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -76,3 +63,4 @@ public class Tag {
 	}
 	
 }
+
