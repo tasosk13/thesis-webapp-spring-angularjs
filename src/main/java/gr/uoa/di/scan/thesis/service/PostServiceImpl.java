@@ -1,5 +1,6 @@
 package gr.uoa.di.scan.thesis.service;
 
+import gr.uoa.di.scan.thesis.dto.PostDTO;
 import gr.uoa.di.scan.thesis.entity.Post;
 import gr.uoa.di.scan.thesis.repository.PostRepository;
 
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service("postService")
-public class PostServiceImpl extends GenericServiceBase<Post, Long> implements PostService {
+public class PostServiceImpl extends GenericServiceBase<Post, PostDTO, Long> implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;

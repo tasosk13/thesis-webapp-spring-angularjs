@@ -1,5 +1,6 @@
 package gr.uoa.di.scan.thesis.service;
 
+import gr.uoa.di.scan.thesis.dto.UserDTO;
 import gr.uoa.di.scan.thesis.entity.User;
 import gr.uoa.di.scan.thesis.repository.UserRepository;
 
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("userService")
-public class UserServiceImpl extends GenericServiceBase<User, Long> implements UserService {
+public class UserServiceImpl extends GenericServiceBase<User, UserDTO, Long> implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -21,9 +22,9 @@ public class UserServiceImpl extends GenericServiceBase<User, Long> implements U
 	}
 	
 	@Transactional
-	public User update(User user) {
-		if( userRepository.exists(user.getId()))
-			return getRepository().save(user);
+	public UserDTO update(UserDTO userDto) {
+		if( userRepository.exists(userDto.getId()))
+			return mapper.map(getRepository().save(mapper.map(userDto, User.class)),UserDTO.class);
 		return null;
 	}
 

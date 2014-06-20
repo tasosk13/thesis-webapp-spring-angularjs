@@ -1,6 +1,6 @@
 package gr.uoa.di.scan.thesis;
 
-import gr.uoa.di.scan.thesis.entity.User;
+import gr.uoa.di.scan.thesis.dto.UserDTO;
 import gr.uoa.di.scan.thesis.service.UserService;
 
 import java.util.ArrayList;
@@ -91,11 +91,11 @@ public class HelloController {
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public @ResponseBody
 	String createUserTest() {
-		User newUser = new User();
+		UserDTO newUser = new UserDTO();
 		newUser.setUsername("giorgos");
 		newUser.setEmail("giorgos@di.gr");
 		newUser.setPassword("pass");
 		newUser = userService.create(newUser);
-		return gson.toJson(newUser, User.class);
+		return gson.toJson(newUser, UserDTO.class);
 	}
 }

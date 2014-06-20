@@ -1,6 +1,7 @@
 package gr.uoa.di.scan.thesis.test;
 
 
+import gr.uoa.di.scan.thesis.dto.UserDTO;
 import gr.uoa.di.scan.thesis.entity.User;
 import gr.uoa.di.scan.thesis.service.UserService;
 
@@ -18,13 +19,13 @@ import org.testng.Assert;
 public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
-	User testUser;
+	private UserDTO testUser;
 	
 	@BeforeClass
 	public void beforeClass() {
-		testUser = new User();
+		testUser = new UserDTO();
 		testUser.setEmail("test@test.gr");
 		testUser.setPassword("test");
 		testUser.setUsername("tester1");
@@ -41,7 +42,7 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=2)
 	@Transactional
 	public void testFindUser() {
-		User foundUser = userService.findByID(testUser.getId());
+		UserDTO foundUser = userService.findByID(testUser.getId());
 		
 		Assert.assertEquals(foundUser.getId(), testUser.getId());
 	}
@@ -60,7 +61,7 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=4)
 	@Transactional
 	public void testDeleteUser() {
-		User deletedUser = userService.delete(testUser.getId());
+		UserDTO deletedUser = userService.delete(testUser.getId());
 		
 		Assert.assertEquals(testUser.getEmail(), deletedUser.getEmail()); //TODO change with equals
 	}
