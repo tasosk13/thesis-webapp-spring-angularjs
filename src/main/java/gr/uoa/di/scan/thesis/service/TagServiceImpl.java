@@ -19,4 +19,14 @@ public class TagServiceImpl extends GenericServiceBase<Tag, TagDTO, Long> implem
 		return tagRepository;
 	}
 
+	@Override
+	Class<Tag> getTypeofEntity() {
+		return Tag.class;
+	}
+
+	@Override
+	Class<TagDTO> getTypeofDTO() {
+		return TagDTO.class;
+	}
+
 }

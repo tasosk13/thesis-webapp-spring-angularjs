@@ -14,9 +14,23 @@ public class CommentServiceImpl extends GenericServiceBase<Comment, CommentDTO, 
 	@Autowired
 	private CommentRepository commentRepository;
 
+	public CommentServiceImpl() {
+		super();
+	}
+
 	@Override
 	JpaRepository<Comment, Long> getRepository() {
 		return commentRepository;
+	}
+
+	@Override
+	Class<Comment> getTypeofEntity() {
+		return Comment.class;
+	}
+
+	@Override
+	Class<CommentDTO> getTypeofDTO() {
+		return CommentDTO.class;
 	}
 
 }

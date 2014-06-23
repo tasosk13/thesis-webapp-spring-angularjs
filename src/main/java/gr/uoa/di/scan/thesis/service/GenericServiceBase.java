@@ -4,45 +4,35 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import org.dozer.DozerBeanMapper;
 
 public abstract class GenericServiceBase<T, DTO, ID extends Serializable> implements GenericService<T, DTO, ID>{
 		
 	abstract JpaRepository<T, ID> getRepository();
+	abstract Class<T> getTypeofEntity();
+	abstract Class<DTO> getTypeofDTO();
 	
 	@Autowired
 	protected DozerBeanMapper mapper;
 	
-	private final Class<T> genericTypeOfT;
-	private final Class<DTO> genericTypeOfDTO;
-	
-	@SuppressWarnings("unchecked")
-	public GenericServiceBase() {
-		this.genericTypeOfT = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), GenericServiceBase.class);
-		this.genericTypeOfDTO = (Class<DTO>) GenericTypeResolver.resolveTypeArgument(getClass(), GenericServiceBase.class);
-	}
-	
-	
-	
 	@Transactional
 	public DTO create(DTO dto) {
-		return mapper.map(getRepository().save( mapper.map(dto, genericTypeOfT) ), genericTypeOfDTO);
+		return mapper.map(getRepository().save( mapper.map(dto, getTypeofEntity()) ), getTypeofDTO());
 	}
 
 	@Transactional
 	public DTO findByID(ID id) {
-		return mapper.map(getRepository().findOne(id), genericTypeOfDTO);
+		return mapper.map(getRepository().findOne(id), getTypeofDTO());
 	}
 	
 	@Transactional
 	public List<DTO> findAll() {
 		List<DTO> list = new ArrayList<DTO>();
 		for (T entity : getRepository().findAll()){
-			list.add(mapper.map(entity, genericTypeOfDTO));
+			list.add(mapper.map(entity, getTypeofDTO()));
 		}
 		return list;
 	}
@@ -55,6 +45,6 @@ public abstract class GenericServiceBase<T, DTO, ID extends Serializable> implem
 			return null;
 
 		getRepository().delete(entity);
-		return mapper.map(entity, genericTypeOfDTO);
+		return mapper.map(entity, getTypeofDTO());
 	}
 }

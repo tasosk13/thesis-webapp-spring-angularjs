@@ -18,4 +18,14 @@ public class PostServiceImpl extends GenericServiceBase<Post, PostDTO, Long> imp
 	JpaRepository<Post, Long> getRepository() {
 		return postRepository;
 	}
+
+	@Override
+	Class<Post> getTypeofEntity() {
+		return Post.class;
+	}
+
+	@Override
+	Class<PostDTO> getTypeofDTO() {
+		return PostDTO.class;
+	}
 }

@@ -21,6 +21,16 @@ public class UserServiceImpl extends GenericServiceBase<User, UserDTO, Long> imp
 		return userRepository;
 	}
 	
+	@Override
+	Class<User> getTypeofEntity() {
+		return User.class;
+	}
+
+	@Override
+	Class<UserDTO> getTypeofDTO() {
+		return UserDTO.class;
+	}
+	
 	@Transactional
 	public UserDTO update(UserDTO userDto) {
 		if( userRepository.exists(userDto.getId()))

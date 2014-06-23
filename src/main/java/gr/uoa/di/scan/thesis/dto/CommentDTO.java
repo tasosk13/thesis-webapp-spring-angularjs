@@ -3,9 +3,11 @@ package gr.uoa.di.scan.thesis.dto;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.stereotype.Component;
 
-@Component
+import javax.xml.bind.annotation.*;
+
+@SuppressWarnings("restriction")
+@XmlRootElement
 public class CommentDTO {
 
 	private Long id;
