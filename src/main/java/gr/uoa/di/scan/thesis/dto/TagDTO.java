@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.*;
 
-@SuppressWarnings("restriction")
 @XmlRootElement
 public class TagDTO implements Identifiable<Long>{
 
