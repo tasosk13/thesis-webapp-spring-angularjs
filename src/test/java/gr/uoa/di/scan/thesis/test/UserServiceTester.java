@@ -2,7 +2,6 @@ package gr.uoa.di.scan.thesis.test;
 
 
 import gr.uoa.di.scan.thesis.dto.UserDTO;
-import gr.uoa.di.scan.thesis.entity.User;
 import gr.uoa.di.scan.thesis.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.Assert;
 
 @ContextConfiguration(locations={"classpath:app-context.xml"})
 @TransactionConfiguration(defaultRollback = true)
@@ -56,13 +55,33 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 		testUser = userService.update(testUser);
 		
 		Assert.assertEquals(testUser.getUsername(), "tester2");
+		
+		UserDTO nonExistentUser = new UserDTO();
+		nonExistentUser.setId((long) 9999);
+		nonExistentUser.setEmail("no@test.com");
+		nonExistentUser.setPassword("pass");
+		nonExistentUser.setUsername("no");
+		
+		nonExistentUser = userService.update(nonExistentUser);
+		Assert.assertNull(nonExistentUser);
 	}
 	
 	@Test(priority=4)
+	@Transactional
+	public void testFindByEmail() {
+		UserDTO user = userService.findByEmail(testUser.getEmail());
+		Assert.assertEquals(user.getEmail(), testUser.getEmail());
+		
+		user = userService.findByEmail("nonexistent@test.com");
+		Assert.assertNull(user);
+	}
+	
+	@Test(priority=5)
 	@Transactional
 	public void testDeleteUser() {
 		UserDTO deletedUser = userService.delete(testUser.getId());
 		
 		Assert.assertEquals(testUser.getEmail(), deletedUser.getEmail()); //TODO change with equals
 	}
+
 }

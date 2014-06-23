@@ -1,5 +1,7 @@
 package gr.uoa.di.scan.thesis.dto;
 
+import gr.uoa.di.scan.thesis.entity.Identifiable;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +9,7 @@ import javax.xml.bind.annotation.*;
 
 @SuppressWarnings("restriction")
 @XmlRootElement
-public class TagDTO {
+public class TagDTO implements Identifiable<Long>{
 
 	private Long id;
 

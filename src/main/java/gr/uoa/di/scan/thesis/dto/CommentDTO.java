@@ -1,5 +1,7 @@
 package gr.uoa.di.scan.thesis.dto;
 
+import gr.uoa.di.scan.thesis.entity.Identifiable;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +10,7 @@ import javax.xml.bind.annotation.*;
 
 @SuppressWarnings("restriction")
 @XmlRootElement
-public class CommentDTO {
+public class CommentDTO implements Identifiable<Long>{
 
 	private Long id;
 

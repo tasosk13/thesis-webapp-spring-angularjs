@@ -30,12 +30,13 @@ public class UserServiceImpl extends GenericServiceBase<User, UserDTO, Long> imp
 	Class<UserDTO> getTypeofDTO() {
 		return UserDTO.class;
 	}
-	
+
 	@Transactional
-	public UserDTO update(UserDTO userDto) {
-		if( userRepository.exists(userDto.getId()))
-			return mapper.map(getRepository().save(mapper.map(userDto, User.class)),UserDTO.class);
-		return null;
+	public UserDTO findByEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user == null)
+			return null;
+		return mapper.map(user, UserDTO.class);
 	}
 
 }

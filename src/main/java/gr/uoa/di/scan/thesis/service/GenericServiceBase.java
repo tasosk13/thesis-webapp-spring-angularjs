@@ -1,5 +1,7 @@
 package gr.uoa.di.scan.thesis.service;
 
+import gr.uoa.di.scan.thesis.entity.Identifiable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class GenericServiceBase<T, DTO, ID extends Serializable> implements GenericService<T, DTO, ID>{
+public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID extends Serializable> implements GenericService<T, DTO, ID>{
 		
 	abstract JpaRepository<T, ID> getRepository();
 	abstract Class<T> getTypeofEntity();
@@ -35,6 +37,13 @@ public abstract class GenericServiceBase<T, DTO, ID extends Serializable> implem
 			list.add(mapper.map(entity, getTypeofDTO()));
 		}
 		return list;
+	}
+	
+	@Transactional
+	public DTO update(DTO dto) {
+		if (getRepository().exists(dto.getId()))
+			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
+		return null;
 	}
 	
 	@Transactional

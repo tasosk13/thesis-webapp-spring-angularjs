@@ -8,5 +8,6 @@ public interface GenericService< T, DTO, ID extends Serializable > {
 	public DTO create(DTO dto);
 	public DTO findByID(ID id);
 	public List<DTO> findAll();
+	public DTO update(DTO dto);
 	public DTO delete(ID id);
 }

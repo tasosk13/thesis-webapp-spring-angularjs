@@ -5,5 +5,5 @@ import gr.uoa.di.scan.thesis.entity.User;
 
 public interface UserService extends GenericService<User, UserDTO, Long>{
 	
-	public UserDTO update(UserDTO user);
+	public UserDTO findByEmail(String email);
 }
