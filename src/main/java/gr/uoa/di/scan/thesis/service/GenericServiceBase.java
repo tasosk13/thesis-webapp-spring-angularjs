@@ -1,6 +1,7 @@
 package gr.uoa.di.scan.thesis.service;
 
 import gr.uoa.di.scan.thesis.entity.Identifiable;
+import gr.uoa.di.scan.thesis.exception.EntityNotFoundException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +28,10 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 
 	@Transactional
 	public DTO findByID(ID id) {
-		return mapper.map(getRepository().findOne(id), getTypeofDTO());
+		T entity = getRepository().findOne(id);
+		if (entity == null)
+			return null;
+		return mapper.map(entity, getTypeofDTO());
 	}
 	
 	@Transactional
@@ -39,19 +43,19 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		return list;
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public DTO update(DTO dto) {
 		if (getRepository().exists(dto.getId()))
 			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
-		return null;
+		throw new EntityNotFoundException();
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public DTO delete(ID id) {
 		T entity = getRepository().findOne(id);
 
 		if (entity == null)
-			return null;
+			throw new EntityNotFoundException();
 
 		getRepository().delete(entity);
 		return mapper.map(entity, getTypeofDTO());

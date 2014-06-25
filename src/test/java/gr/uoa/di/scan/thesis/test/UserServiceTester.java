@@ -2,6 +2,7 @@ package gr.uoa.di.scan.thesis.test;
 
 
 import gr.uoa.di.scan.thesis.dto.UserDTO;
+import gr.uoa.di.scan.thesis.exception.EntityNotFoundException;
 import gr.uoa.di.scan.thesis.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +49,18 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	
 	@Test(priority=3)
 	@Transactional
-	public void testUpdateUser() {
+	public void testUpdateUser() throws EntityNotFoundException {
 		
 		testUser = userService.findByID(testUser.getId());
 		testUser.setUsername("tester2");
 		testUser = userService.update(testUser);
 		
 		Assert.assertEquals(testUser.getUsername(), "tester2");
+	}
+
+	@Test(priority=4, expectedExceptions = EntityNotFoundException.class)
+	@Transactional
+	public void testUpdateNonExistentUser() throws EntityNotFoundException {
 		
 		UserDTO nonExistentUser = new UserDTO();
 		nonExistentUser.setId((long) 9999);
@@ -63,10 +69,9 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 		nonExistentUser.setUsername("no");
 		
 		nonExistentUser = userService.update(nonExistentUser);
-		Assert.assertNull(nonExistentUser);
 	}
 	
-	@Test(priority=4)
+	@Test(priority=5)
 	@Transactional
 	public void testFindByEmail() {
 		UserDTO user = userService.findByEmail(testUser.getEmail());
@@ -76,12 +81,18 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 		Assert.assertNull(user);
 	}
 	
-	@Test(priority=5)
+	@Test(priority=6)
 	@Transactional
-	public void testDeleteUser() {
+	public void testDeleteUser() throws EntityNotFoundException {
 		UserDTO deletedUser = userService.delete(testUser.getId());
 		
 		Assert.assertEquals(testUser.getEmail(), deletedUser.getEmail()); //TODO change with equals
+	}
+
+	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)
+	@Transactional
+	public void testDeleteNonExistentUser() throws EntityNotFoundException {
+		userService.delete(testUser.getId());
 	}
 
 }

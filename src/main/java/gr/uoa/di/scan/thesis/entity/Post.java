@@ -35,7 +35,7 @@ public class Post {
 	@JoinColumn(name="userId",insertable=false,updatable=false,nullable=false)
 	private User createdBy;
 	
-	@OneToMany(mappedBy="postedInPost",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="postedInPost",cascade=CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<Comment>();
 	
 	@ManyToMany
