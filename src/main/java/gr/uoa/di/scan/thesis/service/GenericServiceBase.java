@@ -42,22 +42,24 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		}
 		return list;
 	}
-	
+
 	@Transactional(rollbackFor = EntityNotFoundException.class)
-	public DTO update(DTO dto) {
+	public DTO update(DTO dto) throws EntityNotFoundException {
 		if (getRepository().exists(dto.getId()))
 			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
 		throw new EntityNotFoundException();
 	}
 	
 	@Transactional(rollbackFor = EntityNotFoundException.class)
-	public DTO delete(ID id) {
+	public DTO delete(ID id) throws EntityNotFoundException {
 		T entity = getRepository().findOne(id);
 
 		if (entity == null)
 			throw new EntityNotFoundException();
 
 		getRepository().delete(entity);
+		getRepository().flush();
+		System.out.println(entity.toString());
 		return mapper.map(entity, getTypeofDTO());
 	}
 }

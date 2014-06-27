@@ -84,9 +84,9 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=6)
 	@Transactional
 	public void testDeleteUser() throws EntityNotFoundException {
-		UserDTO deletedUser = userService.delete(testUser.getId());
+		userService.delete(testUser.getId());
 		
-		Assert.assertEquals(testUser.getEmail(), deletedUser.getEmail()); //TODO change with equals
+		Assert.assertNull(userService.findByID(testUser.getId()));
 	}
 
 	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)

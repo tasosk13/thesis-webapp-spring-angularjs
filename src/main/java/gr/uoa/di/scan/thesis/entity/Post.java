@@ -32,7 +32,7 @@ public class Post {
 	private String body;
 	
 	@ManyToOne
-	@JoinColumn(name="userId",insertable=false,updatable=false,nullable=false)
+	@JoinColumn(name="userId",insertable=true,updatable=false,nullable=false)
 	private User createdBy;
 	
 	@OneToMany(mappedBy="postedInPost",cascade=CascadeType.ALL)
@@ -115,6 +115,12 @@ public class Post {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", title=" + title + ", body=" + body
+				+ ", createdBy=" + createdBy.getId() + "]";
 	}
 	
 }

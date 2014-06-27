@@ -42,17 +42,10 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 		testUser.setUsername("tester1");
 	}
 
-	@AfterClass
-	public void afterClass() {
-		if (testPost.getId() != null)
-			postService.delete(testPost.getId());
-		if (testUser.getId() != null)
-			userService.delete(testUser.getId());
-	}
-
 	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testCreatePostWithNonExistentUser() throws EntityNotFoundException {
+		testUser.setId((long) 9999);
 		testPost.setCreatedBy(testUser);
 		postService.create(testPost);
 	}
@@ -102,9 +95,9 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=6)
 	@Transactional
 	public void testDeletePost() throws EntityNotFoundException {
-		PostDTO deletedPost = postService.delete(testPost.getId());
-
-		Assert.assertEquals(testPost.getTitle(), deletedPost.getTitle()); //TODO change with equals
+		Assert.assertNotNull(postService.findByID(testPost.getId()));
+		postService.delete(testPost.getId());
+		Assert.assertNull(postService.findByID(testPost.getId()));
 	}
 
 	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)
@@ -112,5 +105,13 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	public void testDeleteNonExistentPost() throws EntityNotFoundException {
 		postService.delete(testPost.getId());
 	}
+
+//	@AfterClass
+//	public void afterClass() {
+//		if (testPost.getId() != null)
+//			postService.delete(testPost.getId());
+//		if (testUser.getId() != null)
+//			userService.delete(testUser.getId());
+//	}
 
 }

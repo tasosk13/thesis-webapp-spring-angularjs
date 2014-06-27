@@ -5,7 +5,7 @@ import gr.uoa.di.scan.thesis.entity.Identifiable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class PostDTO implements Identifiable<Long>{

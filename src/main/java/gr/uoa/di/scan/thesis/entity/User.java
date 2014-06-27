@@ -36,10 +36,10 @@ public class User {
 	@Column(nullable=false)
 	private String password;
 	
-	@OneToMany(mappedBy="createdBy",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="createdBy",cascade=CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
 	
-	@OneToMany(mappedBy="postedBy",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="postedBy",cascade=CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Long getId() {
