@@ -40,8 +40,8 @@ public class PostServiceImpl extends GenericServiceBase<Post, PostDTO, Long> imp
 	public PostDTO create(PostDTO dto) throws EntityNotFoundException {
 		if (userRepository.exists(dto.getCreatedBy().getId()))
 			return super.create(dto);
-		else
-			throw new EntityNotFoundException();
+			
+		throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
 	}
 
 

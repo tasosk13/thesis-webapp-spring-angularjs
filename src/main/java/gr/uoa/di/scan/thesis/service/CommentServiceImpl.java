@@ -26,28 +26,35 @@ public class CommentServiceImpl extends GenericServiceBase<Comment, CommentDTO, 
 
 	@Override
 	JpaRepository<Comment, Long> getRepository() {
+		
 		return commentRepository;
 	}
 
 	@Override
 	Class<Comment> getTypeofEntity() {
+		
 		return Comment.class;
 	}
 
 	@Override
 	Class<CommentDTO> getTypeofDTO() {
+		
 		return CommentDTO.class;
 	}
 
 	@Override
 	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public CommentDTO create(CommentDTO dto) throws EntityNotFoundException {
-		if (userRepository.exists(dto.getPostedBy().getId()))
-			throw new EntityNotFoundException();
+		
+		if (!userRepository.exists(dto.getPostedBy().getId()))
+			throw new EntityNotFoundException(getTypeofEntity() + " not found");
+		
 		if (dto.getPostedInComment() != null && !commentRepository.exists(dto.getPostedInComment().getId()))
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+		
 		if (dto.getPostedInPost() != null && !postRepository.exists(dto.getPostedInPost().getId()))
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+		
 		return super.create(dto);
 	}
 
