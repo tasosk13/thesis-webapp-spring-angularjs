@@ -26,36 +26,43 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		return mapper.map(getRepository().save( mapper.map(dto, getTypeofEntity()) ), getTypeofDTO());
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public DTO findByID(ID id) {
+		
 		T entity = getRepository().findOne(id);
 		if (entity == null)
-			return null;
+			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+		
 		return mapper.map(entity, getTypeofDTO());
 	}
 	
 	@Transactional
 	public List<DTO> findAll() {
+		
 		List<DTO> list = new ArrayList<DTO>();
 		for (T entity : getRepository().findAll()){
 			list.add(mapper.map(entity, getTypeofDTO()));
 		}
+		
 		return list;
 	}
 
 	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public DTO update(DTO dto) throws EntityNotFoundException {
+
 		if (getRepository().exists(dto.getId()))
 			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
-		throw new EntityNotFoundException();
+		
+		throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
 	}
 	
 	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public DTO delete(ID id) throws EntityNotFoundException {
+
 		T entity = getRepository().findOne(id);
 
 		if (entity == null)
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
 
 		getRepository().delete(entity);
 		getRepository().flush();

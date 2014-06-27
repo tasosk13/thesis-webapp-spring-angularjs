@@ -2,6 +2,7 @@ package gr.uoa.di.scan.thesis.service;
 
 import gr.uoa.di.scan.thesis.dto.UserDTO;
 import gr.uoa.di.scan.thesis.entity.User;
+import gr.uoa.di.scan.thesis.exception.EntityNotFoundException;
 import gr.uoa.di.scan.thesis.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +19,30 @@ public class UserServiceImpl extends GenericServiceBase<User, UserDTO, Long> imp
 
 	@Override
 	JpaRepository<User, Long> getRepository() {
+		
 		return userRepository;
 	}
 	
 	@Override
 	Class<User> getTypeofEntity() {
+		
 		return User.class;
 	}
 
 	@Override
 	Class<UserDTO> getTypeofDTO() {
+		
 		return UserDTO.class;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = EntityNotFoundException.class)
 	public UserDTO findByEmail(String email) {
+		
 		User user = userRepository.findByEmail(email);
+		
 		if (user == null)
-			return null;
+			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+		
 		return mapper.map(user, UserDTO.class);
 	}
 
