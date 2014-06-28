@@ -42,6 +42,7 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		testComment.setBody("Test comment");
 
 		testUser = new UserDTO();
+		testUser.setId((long)1111);
 		testUser.setEmail("test@test.gr");
 		testUser.setPassword("test");
 		testUser.setUsername("tester1");
@@ -50,14 +51,8 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		testPost.setTitle("Test title");
 		testPost.setBody("Test body");
 	}
-
-	@AfterClass
-	public void afterClass() {
-		if (testComment.getId() != null)
-			commentService.delete(testComment.getId());
-		if (testUser.getId() != null)
-			userService.delete(testUser.getId());
-	}
+	
+	
 
 	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
@@ -66,18 +61,18 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		commentService.create(testComment);
 	}
 
-	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
+	@Test(priority=2, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testCreateCommentWithNonExistentPost() throws EntityNotFoundException {
+		testUser = userService.create(testUser);
+		Assert.assertNotNull(testUser.getId());
 		testComment.setPostedInPost(testPost);
 		commentService.create(testComment);
 	}
 
-	@Test(priority=2)
+	@Test(priority=3)
 	@Transactional
 	public void testCreateComment() throws EntityNotFoundException {
-		testUser = userService.create(testUser);
-		Assert.assertNotNull(testUser.getId());
 
 		testPost.setCreatedBy(testUser);
 		testPost = postService.create(testPost);
@@ -90,14 +85,14 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		Assert.assertNotNull(testComment.getId());
 	}
 
-	@Test(priority=3)
+	@Test(priority=4)
 	@Transactional
 	public void testFindComment() {
 		CommentDTO foundComment = commentService.findByID(testComment.getId());
 		Assert.assertEquals(foundComment.getId(), testComment.getId());
 	}
 
-	@Test(priority=4)
+	@Test(priority=5)
 	@Transactional
 	public void testUpdateComment() throws EntityNotFoundException {
 
@@ -108,7 +103,7 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(testComment.getBody(), "Test updated comment");
 	}
 
-	@Test(priority=5, expectedExceptions = EntityNotFoundException.class)
+	@Test(priority=6, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testUpdateNonExistentComment() throws EntityNotFoundException {
 
@@ -119,18 +114,25 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		nonExistentComment = commentService.update(nonExistentComment);
 	}
 
-	@Test(priority=6)
+	@Test(priority=7)
 	@Transactional
 	public void testDeleteComment() throws EntityNotFoundException {
 		CommentDTO deletedComment = commentService.delete(testComment.getId());
 
-		Assert.assertEquals(testComment.getBody(), deletedComment.getBody()); //TODO change with equals
+		Assert.assertNull(commentService.findByID(deletedComment.getId()));
 	}
 
-	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)
+	@Test(priority=8, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testDeleteNonExistentComment() throws EntityNotFoundException {
 		commentService.delete(testComment.getId());
 	}
 
+	/*@AfterClass
+	public void afterClass() {
+		if (testComment.getId() != null)
+			commentService.delete(testComment.getId());
+		if (testUser.getId() != null)
+			userService.delete(testUser.getId());
+	}*/
 }

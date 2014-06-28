@@ -11,6 +11,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID extends Serializable> implements GenericService<T, DTO, ID>{
 		
@@ -46,10 +47,10 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		
 		return list;
 	}
-
+	
 	@Transactional(rollbackFor = EntityNotFoundException.class)
-	public DTO update(DTO dto) throws EntityNotFoundException {
-
+	public DTO update(DTO dto) {
+		
 		if (getRepository().exists(dto.getId()))
 			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
 		
@@ -57,8 +58,8 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 	}
 	
 	@Transactional(rollbackFor = EntityNotFoundException.class)
-	public DTO delete(ID id) throws EntityNotFoundException {
-
+	public DTO delete(ID id) {
+		
 		T entity = getRepository().findOne(id);
 
 		if (entity == null)
@@ -66,7 +67,7 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 
 		getRepository().delete(entity);
 		getRepository().flush();
-		System.out.println(entity.toString());
+
 		return mapper.map(entity, getTypeofDTO());
 	}
 }

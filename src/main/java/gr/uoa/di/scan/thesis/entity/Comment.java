@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,23 +30,23 @@ public class Comment {
 	@Column(nullable=false)
 	private String body;
 	
-	@Column(nullable=false,updatable=false)
+	@Column(nullable=false,insertable=true,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreated;
 	
 	@ManyToOne
-	@JoinColumn(name="userId",insertable=false,updatable=false,nullable=false)
+	@JoinColumn(name="userId",insertable=true,updatable=false,nullable=false)
 	private User postedBy;
 	
 	@ManyToOne
-	@JoinColumn(name="postId",insertable=false,updatable=false,nullable=true)
+	@JoinColumn(name="postId",insertable=true,updatable=false,nullable=true)
 	private Post postedInPost;
 	
 	@ManyToOne
-	@JoinColumn(name="commentId",insertable=false,updatable=false,nullable=true)
+	@JoinColumn(name="commentId",insertable=true,updatable=false,nullable=true)
 	private Comment postedInComment;
 	
-	@OneToMany(mappedBy="postedInComment",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="postedInComment",cascade=CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Long getId() {
@@ -102,6 +103,11 @@ public class Comment {
 
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	@PrePersist
+	public void dateCreated() {
+		this.dateCreated = new Date();
 	}
 
 	@Override
