@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +30,7 @@ public class Comment {
 	@Column(nullable=false)
 	private String body;
 	
-	@Column(nullable=false,updatable=false)
+	@Column(nullable=false,insertable=true,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreated;
 	
@@ -102,6 +103,11 @@ public class Comment {
 
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	@PrePersist
+	public void dateCreated() {
+		this.dateCreated = new Date();
 	}
 
 	@Override
