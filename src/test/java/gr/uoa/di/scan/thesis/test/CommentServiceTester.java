@@ -51,17 +51,10 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 		testPost.setBody("Test body");
 	}
 
-	@AfterClass
-	public void afterClass() {
-		if (testComment.getId() != null)
-			commentService.delete(testComment.getId());
-		if (testUser.getId() != null)
-			userService.delete(testUser.getId());
-	}
-
 	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testCreateCommentWithNonExistentUser() throws EntityNotFoundException {
+		testUser.setId((long)9999);
 		testComment.setPostedBy(testUser);
 		commentService.create(testComment);
 	}
@@ -69,6 +62,7 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
 	@Transactional
 	public void testCreateCommentWithNonExistentPost() throws EntityNotFoundException {
+		testPost.setId((long)9999);
 		testComment.setPostedInPost(testPost);
 		commentService.create(testComment);
 	}
@@ -132,5 +126,13 @@ public class CommentServiceTester extends AbstractTestNGSpringContextTests {
 	public void testDeleteNonExistentComment() throws EntityNotFoundException {
 		commentService.delete(testComment.getId());
 	}
+
+//	@AfterClass
+//	public void afterClass() {
+//		if (testComment.getId() != null)
+//			commentService.delete(testComment.getId());
+//		if (testUser.getId() != null)
+//			userService.delete(testUser.getId());
+//	}
 
 }
