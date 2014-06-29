@@ -13,7 +13,6 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -95,6 +94,7 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	@Test(priority=6)
 	@Transactional
 	public void testDeletePost() throws EntityNotFoundException {
+		
 		Assert.assertNotNull(postService.findByID(testPost.getId()));
 		postService.delete(testPost.getId());
 		Assert.assertNull(postService.findByID(testPost.getId()));

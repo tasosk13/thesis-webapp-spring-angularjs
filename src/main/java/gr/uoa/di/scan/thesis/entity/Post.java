@@ -38,7 +38,7 @@ public class Post {
 	@OneToMany(mappedBy="postedInPost",cascade=CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<Comment>();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="PostHasTag",
 			joinColumns=@JoinColumn(name="postId",referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="tagId",referencedColumnName="id"))
