@@ -1,8 +1,5 @@
 package gr.uoa.di.scan.thesis;
 
-import gr.uoa.di.scan.thesis.dto.UserDTO;
-import gr.uoa.di.scan.thesis.service.UserService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +18,7 @@ public class HelloController {
 
 	@Autowired
 	Gson gson;
-	
-	@Autowired
-	UserService userService;
+
 
 	class WelcomeMessagesUtil {
 
@@ -87,15 +82,5 @@ public class HelloController {
 		String retValue = "{ \"home\": \"%f\" }";
 		return String.format(retValue, Math.pow(number, 2.0));
 	}
-	
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public @ResponseBody
-	String createUserTest() {
-		UserDTO newUser = new UserDTO();
-		newUser.setUsername("giorgos");
-		newUser.setEmail("giorgos@di.gr");
-		newUser.setPassword("pass");
-		newUser = userService.create(newUser);
-		return gson.toJson(newUser, UserDTO.class);
-	}
+
 }
