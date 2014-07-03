@@ -15,7 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 @ContextConfiguration(locations={"classpath:app-context.xml"})
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration(defaultRollback = false)
 public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	
 	@Autowired
@@ -32,7 +32,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority=1)
-	@Transactional
 	public void testCreateUser() {		
 		testUser = userService.create(testUser);
 		
@@ -40,7 +39,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority=2)
-	@Transactional
 	public void testFindUser() {
 		UserDTO foundUser = userService.findByID(testUser.getId());
 		
@@ -48,7 +46,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority=3)
-	@Transactional
 	public void testUpdateUser() throws EntityNotFoundException {
 		
 		testUser = userService.findByID(testUser.getId());
@@ -59,7 +56,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=4, expectedExceptions = EntityNotFoundException.class)
-	@Transactional
 	public void testUpdateNonExistentUser() throws EntityNotFoundException {
 		
 		UserDTO nonExistentUser = new UserDTO();
@@ -72,7 +68,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority=5)
-	@Transactional
 	public void testFindByEmail() {
 		UserDTO user = userService.findByEmail(testUser.getEmail());
 		Assert.assertEquals(user.getEmail(), testUser.getEmail());
@@ -82,7 +77,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority=6)
-	@Transactional
 	public void testDeleteUser() throws EntityNotFoundException {
 		userService.delete(testUser.getId());
 		
@@ -90,7 +84,6 @@ public class UserServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)
-	@Transactional
 	public void testDeleteNonExistentUser() throws EntityNotFoundException {
 		userService.delete(testUser.getId());
 	}
