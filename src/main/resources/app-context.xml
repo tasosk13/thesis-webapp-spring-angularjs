@@ -20,7 +20,7 @@
 			http://www.springframework.org/schema/security
       http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<context:component-scan base-package="gr.uoa.di.scan.thesis.**"/>
+	<context:component-scan base-package="gr.uoa.di.scan.**"/>
 	<mvc:annotation-driven/>
 
 	<jpa:repositories base-package="gr.uoa.di.scan.thesis.repository"
