@@ -17,7 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 @ContextConfiguration(locations={"classpath:app-context.xml"})
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration(defaultRollback = false)
 public class PostServiceTester extends AbstractTestNGSpringContextTests {
 
 	@Autowired
@@ -42,7 +42,6 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=1, expectedExceptions = EntityNotFoundException.class)
-	@Transactional
 	public void testCreatePostWithNonExistentUser() throws EntityNotFoundException {
 		testUser.setId((long) 9999);
 		testPost.setCreatedBy(testUser);
@@ -50,7 +49,6 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=2)
-	@Transactional
 	public void testCreatePost() throws EntityNotFoundException {
 		testUser = userService.create(testUser);
 		Assert.assertNotNull(testUser.getId());
@@ -62,14 +60,12 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=3)
-	@Transactional
 	public void testFindPost() {
 		PostDTO foundPost = postService.findByID(testPost.getId());
 		Assert.assertEquals(foundPost.getId(), testPost.getId());
 	}
 
 	@Test(priority=4)
-	@Transactional
 	public void testUpdatePost() throws EntityNotFoundException {
 
 		testPost = postService.findByID(testPost.getId());
@@ -80,7 +76,6 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=5, expectedExceptions = EntityNotFoundException.class)
-	@Transactional
 	public void testUpdateNonExistentPost() throws EntityNotFoundException {
 
 		PostDTO nonExistentPost = new PostDTO();
@@ -92,7 +87,6 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=6)
-	@Transactional
 	public void testDeletePost() throws EntityNotFoundException {
 		
 		Assert.assertNotNull(postService.findByID(testPost.getId()));
@@ -101,17 +95,8 @@ public class PostServiceTester extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(priority=7, expectedExceptions = EntityNotFoundException.class)
-	@Transactional
 	public void testDeleteNonExistentPost() throws EntityNotFoundException {
 		postService.delete(testPost.getId());
 	}
-
-//	@AfterClass
-//	public void afterClass() {
-//		if (testPost.getId() != null)
-//			postService.delete(testPost.getId());
-//		if (testUser.getId() != null)
-//			userService.delete(testUser.getId());
-//	}
 
 }
