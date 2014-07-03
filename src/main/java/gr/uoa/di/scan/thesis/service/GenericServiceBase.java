@@ -54,7 +54,7 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		if (getRepository().exists(dto.getId()))
 			return mapper.map(getRepository().save(mapper.map(dto, getTypeofEntity())),getTypeofDTO());
 		
-		throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+		throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 	}
 	
 	@Transactional(rollbackFor = EntityNotFoundException.class)
@@ -63,7 +63,7 @@ public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID ext
 		T entity = getRepository().findOne(id);
 
 		if (entity == null)
-			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+			throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 
 		getRepository().delete(entity);
 		getRepository().flush();

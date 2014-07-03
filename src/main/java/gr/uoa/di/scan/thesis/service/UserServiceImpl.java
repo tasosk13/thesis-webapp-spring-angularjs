@@ -41,7 +41,7 @@ public class UserServiceImpl extends GenericServiceBase<User, UserDTO, Long> imp
 		User user = userRepository.findByEmail(email);
 		
 		if (user == null)
-			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+			throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 		
 		return mapper.map(user, UserDTO.class);
 	}

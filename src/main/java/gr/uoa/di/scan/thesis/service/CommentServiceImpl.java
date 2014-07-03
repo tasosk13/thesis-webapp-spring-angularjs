@@ -47,13 +47,13 @@ public class CommentServiceImpl extends GenericServiceBase<Comment, CommentDTO, 
 	public CommentDTO create(CommentDTO dto) throws EntityNotFoundException {
 		
 		if (!userRepository.exists(dto.getPostedBy().getId()))
-			throw new EntityNotFoundException(getTypeofEntity() + " not found");
+			throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 		
 		if (dto.getPostedInComment() != null && !commentRepository.exists(dto.getPostedInComment().getId()))
-			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+			throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 		
 		if (dto.getPostedInPost() != null && !postRepository.exists(dto.getPostedInPost().getId()))
-			throw new EntityNotFoundException(getTypeofEntity().getName() + " not found");
+			throw new EntityNotFoundException(getTypeofEntity().getSimpleName() + " not found");
 		
 		return super.create(dto);
 	}
