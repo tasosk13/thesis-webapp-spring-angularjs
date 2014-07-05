@@ -11,7 +11,6 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 public abstract class GenericServiceBase<T, DTO extends Identifiable<ID>, ID extends Serializable> implements GenericService<T, DTO, ID>{
 		
